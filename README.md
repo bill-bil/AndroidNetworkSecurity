@@ -75,3 +75,10 @@ DH（Diffie-Hellman），一种确保共享Key安全的穿越不安全网络的�
 
 在.idea下的gradle.xml文件下，<GradleProjectSettings>节点下加入<option name="delegatedBuild" value="false" />，重新build项目即可
 
+### 抓包工具：
+
+开发过程中调试自己的数据是否正确、服务端返回的数据是否正确会用到抓包工具，可以自由的窥探数据。
+
+为了走代理，需要在模拟器和真机上配置一下。
+
+设置-》WIFI-》AndroidWifi点开-》点击右上角的笔,编辑proxy。hostname填写为宿主机的ip，port填写为fiddle等抓包工具的代理端口。
