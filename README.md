@@ -71,5 +71,7 @@ DH（Diffie-Hellman），一种确保共享Key安全的穿越不安全网络的�
 
 ​               ----确认收到，完成握手--------》
 
+### AndroidStudio运行java程序，报错说找不到main函数：
 
+在.idea下的gradle.xml文件下，<GradleProjectSettings>节点下加入<option name="delegatedBuild" value="false" />，重新build项目即可
 
