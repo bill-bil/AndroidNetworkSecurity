@@ -5,6 +5,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.yinlei.crypto.AES;
+import com.yinlei.crypto.DH;
 import com.yinlei.crypto.RSA;
 import com.yinlei.server.http.HttpCallback;
 import com.yinlei.server.http.HttpServer;
@@ -31,17 +32,29 @@ public class Main {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static void main(String[] args) {
 
-        int content = 123456;
-        String encrypted = RSA.encrypt(content, PUB_KEY);
-        System.out.println(encrypted);
-        System.out.println(RSA.decypt(encrypted, PRI_KEY));
+        DH dhC = new DH();
+        DH dhS = new DH();
 
-        AES aes = new AES();
-        String content1 = "yinlei is handsome!";
-        byte[] encryptedByte = aes.encrypt(content1);
-        System.out.println(new String(encryptedByte));
-        byte[] decrypted = aes.decrypt(encryptedByte);
-        System.out.println(new String(decrypted));
+        // 客户端创建公钥
+        int publicKeyC = dhC.getPublicKey();
+        // 服务端创建公钥
+        int publicKeyS = dhS.getPublicKey();
+        byte[] secretC = dhC.getSecretKey(publicKeyS);
+        byte[] secretS = dhS.getSecretKey(publicKeyC);
+        System.out.println("Client secret :" + new String(secretC));
+        System.out.println("Server secret :" + new String(secretS));
+
+//        int content = 123456;
+//        String encrypted = RSA.encrypt(content, PUB_KEY);
+//        System.out.println(encrypted);
+//        System.out.println(RSA.decypt(encrypted, PRI_KEY));
+//
+//        AES aes = new AES();
+//        String content1 = "yinlei is handsome!";
+//        byte[] encryptedByte = aes.encrypt(content1);
+//        System.out.println(new String(encryptedByte));
+//        byte[] decrypted = aes.decrypt(encryptedByte);
+//        System.out.println(new String(decrypted));
 
         HttpServer server = new HttpServer(new HttpCallback() {
             @Override

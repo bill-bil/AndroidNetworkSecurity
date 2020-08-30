@@ -136,3 +136,9 @@ rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem
 - 获取AES Cipher
 - 执行加密
 - Base64编码
+
+### DH密钥交换：
+
+- DH密钥交换主要是2个公式的编写：公钥计算公式、密钥计算公式
+- 生成随机数作为私钥
+- 预置质数原根对

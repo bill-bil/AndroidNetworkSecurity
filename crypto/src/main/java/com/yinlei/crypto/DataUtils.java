@@ -5,6 +5,8 @@ import android.util.Base64;
 
 import androidx.annotation.RequiresApi;
 
+import java.nio.ByteBuffer;
+
 public class DataUtils {
 
     /**
@@ -29,6 +31,13 @@ public class DataUtils {
         }catch (Exception e){
             return java.util.Base64.getEncoder().encodeToString(data);
         }
+    }
+
+    //将int转换为byte[]数组，一个int对应4个byte
+    public static byte[] int2Byte(int data) {
+        ByteBuffer buffer = ByteBuffer.allocate(4);
+        buffer.putInt(data);
+        return buffer.array();
     }
 
 }
