@@ -102,3 +102,29 @@ OpenSSL的windows安装包放到了项目的doc文件夹下。
 genrsa -out rsa_private_key.pem 1024
 ```
 
+生成RSA公钥：
+
+```
+rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem
+```
+
+如果遇到对齐失败，可以看到java中new PKCS8EncodedKeySpec是以pkcs8,而openssl默认是pkcs1，所以将上面生成的私钥转换为pkcs8：
+
+```
+ pkcs8 -topk8 -inform PEM -in rsa_private.pem -outform pem -nocrypt -out rsa_private_key.pem
+```
+
+然后还需要重新生成一下公钥：
+
+```
+rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem
+```
+
+
+
+### Java中的RSA加密库：
+
+- 通过KeyFactory获取RSA算法实例
+- 生成RSA公钥对象
+- 获取RSA Cipher
+- 执行加密
