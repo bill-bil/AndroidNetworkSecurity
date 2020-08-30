@@ -82,3 +82,23 @@ DH（Diffie-Hellman），一种确保共享Key安全的穿越不安全网络的�
 为了走代理，需要在模拟器和真机上配置一下。
 
 设置-》WIFI-》AndroidWifi点开-》点击右上角的笔,编辑proxy。hostname填写为宿主机的ip，port填写为fiddle等抓包工具的代理端口。
+
+### OpenSSL:开放加密库
+
+- 完全开源的软件包，致力于解决各种信息安全
+- 内部集成了非常完整的加密算法，包括RSA/AES
+- 跨平台
+- 功能完善，代码库相对较大
+
+openssl安装：http://slproweb.com/products/Win32OpenSSL.html
+
+并将bin文件夹配置到PATH里即可。
+
+OpenSSL的windows安装包放到了项目的doc文件夹下。
+
+生成RSA私钥：
+
+```
+genrsa -out rsa_private_key.pem 1024
+```
+
