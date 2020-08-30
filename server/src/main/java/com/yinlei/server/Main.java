@@ -1,14 +1,18 @@
 package com.yinlei.server;
 
 import android.os.Build;
+import android.text.TextUtils;
 
 import androidx.annotation.RequiresApi;
 
 import com.yinlei.crypto.AES;
 import com.yinlei.crypto.DH;
+import com.yinlei.crypto.DataUtils;
 import com.yinlei.crypto.RSA;
 import com.yinlei.server.http.HttpCallback;
 import com.yinlei.server.http.HttpServer;
+
+import java.util.Map;
 
 public class Main {
     private static final String PUB_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCrAXZLvzq5sWod84ltsHXkt++B\n" +
@@ -29,20 +33,22 @@ public class Main {
             "QE8udcEAxsd7AmbUQX5aXkCdqwvbyZC2KHdsD7QP8MiiazlthiY+YQJAcLH/R82/\n" +
             "oiGh7X4XtdTe7ynMvjArBtLQ7I4ikQCkhQZm4Sk+9nuwcnVrbZKNaikW+PVK9WEK\n" +
             "9yRsZ/usG6Anrw==";
+    private static final String HANDSHAKE = "handshake";
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static void main(String[] args) {
 
-        DH dhC = new DH();
-        DH dhS = new DH();
-
-        // 客户端创建公钥
-        int publicKeyC = dhC.getPublicKey();
-        // 服务端创建公钥
-        int publicKeyS = dhS.getPublicKey();
-        byte[] secretC = dhC.getSecretKey(publicKeyS);
-        byte[] secretS = dhS.getSecretKey(publicKeyC);
-        System.out.println("Client secret :" + new String(secretC));
-        System.out.println("Server secret :" + new String(secretS));
+//        DH dhC = new DH();
+//        DH dhS = new DH();
+//
+//        // 客户端创建公钥
+//        int publicKeyC = dhC.getPublicKey();
+//        // 服务端创建公钥
+//        int publicKeyS = dhS.getPublicKey();
+//        byte[] secretC = dhC.getSecretKey(publicKeyS);
+//        byte[] secretS = dhS.getSecretKey(publicKeyC);
+//        System.out.println("Client secret :" + new String(secretC));
+//        System.out.println("Server secret :" + new String(secretS));
 
 //        int content = 123456;
 //        String encrypted = RSA.encrypt(content, PUB_KEY);
@@ -57,11 +63,32 @@ public class Main {
 //        System.out.println(new String(decrypted));
 
         HttpServer server = new HttpServer(new HttpCallback() {
+            private DH mDh = new DH();
+            private AES mAes = new AES();
             @Override
             public byte[] onResponse(String request) {
-                return "yinlei".getBytes();
+                System.out.println(request);
+                // 判断是否是握手请求
+                if (isHandshake(request)) {
+                    // 握手的相应操作
+                    Map<String, String> header = HttpServer.getHeader(request);
+                    String handshake = header.get(HANDSHAKE);
+                    System.out.println(handshake);
+                    int dhPubKey = Integer.valueOf(RSA.decypt(handshake, PRI_KEY));
+                    // 服务端拿到客户端的dh pubKey,生成dh的secret，设置aes作为aes密钥
+                    mAes.setKey(mDh.getSecretKey(dhPubKey));
+                    return DataUtils.int2Byte(mDh.getPublicKey());
+                }else {
+                    //应用请求的操作
+                    return  mAes.encrypt("yinlei");
+                }
             }
         });
         server.startHttpServer();
+    }
+
+
+    private static boolean isHandshake(String request) {
+        return (request != null && request.contains(HANDSHAKE));
     }
 }

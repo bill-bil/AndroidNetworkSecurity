@@ -40,4 +40,10 @@ public class DataUtils {
         return buffer.array();
     }
 
+    //将byte[]数组转换为int，一个int对应4个byte
+    public static int byte2Int(byte[] data) {
+        ByteBuffer buffer = ByteBuffer.wrap(data);
+        return buffer.getInt();
+    }
+
 }

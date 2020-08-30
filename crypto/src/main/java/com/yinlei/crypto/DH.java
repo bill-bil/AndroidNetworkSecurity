@@ -29,6 +29,13 @@ public class DH {
         return sha256(buf);
     }
 
+    // 接收对方的公钥，与自己的私钥通过密钥公式产生密钥，需要作为AES的密钥，需要转换为byte[]
+    public byte[] getSecretKey(byte[] publicKey) {
+        int key = DataUtils.byte2Int(publicKey);
+        int buf = (int) (Math.pow(key, mPriKey) % dhP);
+        return sha256(buf);
+    }
+
     // 将dh交换后的双方相同的密钥做一个hash转换，转换为byte[256]类型做AES密钥
     private byte[] sha256(int data) {
         try {

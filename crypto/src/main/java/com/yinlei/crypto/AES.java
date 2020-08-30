@@ -10,6 +10,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 public class AES {
 
@@ -31,6 +32,18 @@ public class AES {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+    }
+
+    public AES(byte[] key) {
+        this.mKey = new SecretKeySpec(key, "AES");
+    }
+
+    public byte[] getKey() {
+        return mKey.getEncoded();
+    }
+
+    public void setKey(byte[] key) {
+        this.mKey = new SecretKeySpec(key, "AES");
     }
 
     public byte[] encrypt(String content) {
