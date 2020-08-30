@@ -128,3 +128,11 @@ rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem
 - 生成RSA公钥对象
 - 获取RSA Cipher
 - 执行加密
+
+### Java中的AES加密库：
+
+- 根据AES密钥创建Secret密钥向量
+- 生成初始化参数向量
+- 获取AES Cipher
+- 执行加密
+- Base64编码

@@ -4,6 +4,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.yinlei.crypto.AES;
 import com.yinlei.crypto.RSA;
 import com.yinlei.server.http.HttpCallback;
 import com.yinlei.server.http.HttpServer;
@@ -34,6 +35,13 @@ public class Main {
         String encrypted = RSA.encrypt(content, PUB_KEY);
         System.out.println(encrypted);
         System.out.println(RSA.decypt(encrypted, PRI_KEY));
+
+        AES aes = new AES();
+        String content1 = "yinlei is handsome!";
+        byte[] encryptedByte = aes.encrypt(content1);
+        System.out.println(new String(encryptedByte));
+        byte[] decrypted = aes.decrypt(encryptedByte);
+        System.out.println(new String(decrypted));
 
         HttpServer server = new HttpServer(new HttpCallback() {
             @Override
