@@ -19,7 +19,7 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
 
     // 服务器地址URL
-    private static final String URL = "";
+    private static final String URL = "http://192.168.101.104/";
 
     private static final String TAG = "yinlei";
 
